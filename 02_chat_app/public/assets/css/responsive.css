@@ -1,0 +1,6 @@
+@media only screen and (orientation: landscape) and (min-width: 1024px) {
+    .chat-app-sec{
+        width: 420px;
+        margin: 0px auto;
+    }
+}

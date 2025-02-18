@@ -1,0 +1,260 @@
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/regular/GoogleSans-Regular.eot');
+    src: url('fonts/regular/GoogleSans-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/regular/GoogleSans-Regular.woff2') format('woff2'),
+        url('fonts/regular/GoogleSans-Regular.woff') format('woff'),
+        url('fonts/regular/GoogleSans-Regular.ttf') format('truetype'),
+        url('fonts/regular/GoogleSans-Regular.svg#GoogleSans-Regular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/medium/GoogleSans-Medium.eot');
+    src: url('fonts/medium/GoogleSans-Medium.eot?#iefix') format('embedded-opentype'),
+        url('fonts/medium/GoogleSans-Medium.woff2') format('woff2'),
+        url('fonts/medium/GoogleSans-Medium.woff') format('woff'),
+        url('fonts/medium/GoogleSans-Medium.ttf') format('truetype'),
+        url('fonts/medium/GoogleSans-Medium.svg#GoogleSans-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/bold/GoogleSans-Bold.eot');
+    src: url('fonts/bold/GoogleSans-Bold.eot?#iefix') format('embedded-opentype'),
+        url('fonts/bold/GoogleSans-Bold.woff2') format('woff2'),
+        url('fonts/bold/GoogleSans-Bold.woff') format('woff'),
+        url('fonts/bold/GoogleSans-Bold.ttf') format('truetype'),
+        url('fonts/bold/GoogleSans-Bold.svg#GoogleSans-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    scroll-behavior: smooth;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Google Sans';
+    font-weight: 400;
+}
+
+input,
+button,
+textarea {
+    font-family: 'Google Sans'
+}
+
+.main-hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+/* ============ chat sec ========= */
+.chat-app-sec {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background: #1b202d;
+    color: #fff
+}
+
+.chat-app-sec .header-bx {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+    border-bottom: 1px solid rgba(229, 229, 229, 0.5);
+    box-sizing: border-box;
+}
+
+.chat-app-sec .header-bx .user-profile {
+    display: flex;
+    justify-content: start;
+    width: 60%;
+    gap: 0 10px;
+}
+
+.chat-app-sec .header-bx .user-image {
+    width: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.chat-app-sec .header-bx .user-image img {
+    width: 100%;
+    display: block;
+}
+
+.input-field {
+    width: 100%;
+    display: block;
+    font-size: 0.9rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.chat-app-sec .header-bx .active-users {
+    font-size: 0.9rem;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-app-sec .header-bx .active-users .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 5px;
+    background: green;
+    border-radius: 50%;
+}
+
+.chat-app-sec .message-list-bx {
+    position: relative;
+    width: 100%;
+    /* background-color: #34487b; */
+    padding: 10px 0;
+    box-sizing: border-box;
+    height: calc(100% - 140px);
+    margin-bottom: 40px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.message-list-bx .list-item {
+    position: relative;
+    width: 80%;
+    margin-bottom: 15px;
+}
+
+.message-list-bx .text-message-bx {
+    position: relative;
+    width: 100%;
+    display: block;
+    margin-bottom: 2px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.message-list-bx #messsageTime {
+    position: relative;
+    width: 100%;
+    display: block;
+    margin-top: 5px;
+    font-size: 0.6rem;
+    padding: 0px 10px;
+    box-sizing: border-box;
+}
+
+.message-list-bx .list-item.left .text-message-bx{
+    border-top-left-radius: 0;
+}
+
+.message-list-bx .list-item.right .text-message-bx{
+    border-top-right-radius: 0;
+}
+
+.message-list-bx .list-item.left #messsageTime{
+    text-align: left;
+}
+
+.message-list-bx .list-item.right #messsageTime{
+    text-align: right;
+}
+
+
+.message-list-bx .list-item.right {
+    margin-left: auto;
+}
+
+.message-list-bx .list-item.left .text-message-bx {
+    background: #373e4e;
+
+}
+
+.message-list-bx .list-item.right .text-message-bx {
+    background: #7a8194;
+
+}
+
+.chat-app-sec .form-bx {
+    width: 100%;
+    display: block;
+}
+
+.chat-app-sec .form-container .form-group {
+    width: 100%;
+    display: flex;
+    background: #535867;
+}
+
+.chat-app-sec .form-container .form-group {
+    width: 100%;
+    display: flex;
+    gap: 0 20px;
+    background: #535867;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.chat-app-sec .form-container .form-group .input-field{
+    font-size: 0.8rem;
+}
+
+.chat-app-sec .form-container .form-group .camera-icon {
+    width: 30px;
+    padding: 2%;
+    box-sizing: border-box;
+    display: flex;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.chat-app-sec .form-container .form-group .send-btn {
+    width: 30px;
+    padding: 2%;
+    box-sizing: border-box;
+    display: flex;
+    background: #fff;
+    border-radius: 50%;
+    transform: rotate(-30deg);
+}
+
+.chat-app-sec .form-container .form-group .camera-icon img,
+.chat-app-sec .form-container .form-group .send-btn img {
+    width: 100%;
+    display: block;
+}
+
+.user-typing-bx{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 65px;
+    font-size: 0.6rem;
+}

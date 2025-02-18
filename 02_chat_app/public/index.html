@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <title>Chat App</title>
+
+</head>
+
+<body>
+
+    <div class="main-hero">
+        <section class="chat-app-sec">
+            <div class="header-bx">
+                <div class="user-profile">
+                    <div class="user-image">
+                        <img src="assets/images/user.avif" alt="">
+                    </div>
+                    <input class="input-field" type="text" name="name" id="userName" value="user" maxlength="15">
+                </div>
+                <div class="active-users">
+                    <span class="dot"></span>
+                    <p>Active <span id="activeUsers"></span></p>
+                </div>
+            </div>
+
+            <!-- ////////////// user list //////////// -->
+            <ul class="message-list-bx" id="messageListBx">
+                <!-- <li class="list-item left">
+                    <span class="text-message-bx">my name deepak.</span>
+                    <span id="messsageTime">time</span>
+                </li>
+                <li class="list-item right">
+                    <span class="text-message-bx">my name deepak.</span>
+                    <span id="messsageTime">time</span>
+                </li> -->
+            </ul>
+
+            <div class="user-typing-bx">
+                <p id="userActive"></p>
+            </div>
+
+            <form class="form-container" id="messageForm">
+                <div class="form-group">
+                    <div class="camera-icon">
+                        <img src="assets/images/camera-icon.png" alt="">
+                    </div>
+                    <input type="text" name="message" id="messageInput" class="input-field"/>
+                    <label for="sendMessageBtn" class="send-btn">
+                        <img src="assets/images/send-icon.png" alt="">
+                    </label>
+                    <input type="submit" value="send"  class="d-none" id="sendMessageBtn">
+                </div>
+            </form>
+
+        </section>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
