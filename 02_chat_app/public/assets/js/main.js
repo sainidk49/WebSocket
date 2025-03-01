@@ -16,7 +16,6 @@ socket.on("total-users", (data) => {
 messageForm.addEventListener("submit", (e) => {
     e.preventDefault();
     sendMessage();
-
 });
 
 
@@ -26,11 +25,9 @@ function sendMessage() {
         message: messageInput.value.trim(),
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-
     socket.emit("message", data);
     addMessageUI(true, data);
     messageInput.value = '';
-
 }
 
 

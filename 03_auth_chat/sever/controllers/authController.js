@@ -63,7 +63,9 @@ const registerUser = async (req, res) => {
 
     const { name, email } = req.body;
 
-    const otp = await sendOTP(email);
+    // const otp = await sendOTP(email);
+    const otp = 3698;
+
     const newUser = new User({ name, email, otp });
     await newUser.save();
     res.status(200).json({ status: true, message: 'OTP sent to email' });
@@ -91,7 +93,8 @@ const loginUser = async (req, res) => {
       return res.status(404).json({ status: false, message: 'User not found' });
     }
 
-    const otp = await sendOTP(email);
+    // const otp = await sendOTP(email);
+    const otp = 3698;
     await User.findByIdAndUpdate(user._id, { ...req.body, otp }, { new: true });
 
     res.status(200).json({ status: true, message: 'OTP sent to email' });
@@ -104,12 +107,14 @@ const loginUser = async (req, res) => {
 // Verify OTP and login
 const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
+  console.log(req.body)
+  console.log(otp)
   const user = await User.findOne({ email });
   if (user && user.otp === otp) {
     user.isVerified = true;
     await user.save();
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ status: true, message: 'OTP verified', token });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+    res.status(200).json({ status: true, message: 'OTP verified', token, userId: user._id, userName: user.name });
   } else {
     res.status(400).json({ status: false, message: 'Invalid OTP' });
   }

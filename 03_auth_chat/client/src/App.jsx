@@ -1,22 +1,34 @@
 import React from 'react';
-import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
-import Login from './components/Login';
-import Chat from './components/Chat';
-import Register from './components/Register';
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Register />} >
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/chat" element={<Chat />} />
-    </Route>
-  )
-);
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ProtectedRoutes from './protected/ProtectedRoutes';
+import Login from './pages/Login';
+import Chat from './pages/Chat';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import AuthProvider from './context/AuthProvider';
+import "./App.css"
+import UserList from './pages/UserList';
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <div className='main-hero'>
+      <div className='common-section relative w-full h-full bg-[url(/assets/images/bg.jpg)]'>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              {/* Protected routes */}
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/users" element={<UserList />} />
+                <Route path="/chat" element={<Chat />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </div>
+    </div>
   );
 }
 

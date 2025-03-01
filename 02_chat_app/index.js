@@ -1,35 +1,26 @@
 const express = require('express');
-const path = require('path')
-const app = express();
+const http = require('http');
+const path = require('path');
+const socketIo = require('socket.io');
+
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-    console.log("Server running is :: ", `http:://localhost:${PORT}`)
-})
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
-const io = require("socket.io")(server)
+// Import the socket logic from the socket module
+const { onConnected } = require('./sockets/socket');
 
-let connectedUsers = new Set();
-
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-io.on('connection', onConnected)
+// Set up socket connection event handler
+io.on('connection', (socket) => {
+    onConnected(socket, io);  
+});
 
-function onConnected(socket) {
-    connectedUsers.add(socket.id);
-    io.emit("total-users", connectedUsers.size)
-
-    socket.on("disconnect", () => {
-        connectedUsers.delete(socket.id);
-        io.emit("total-users", connectedUsers.size)
-    })
-
-    socket.on("message", (data)=>{
-        socket.broadcast.emit("chat-message", data)
-    })  
-
-    socket.on("typing", (data) => {
-        socket.broadcast.emit("typing", data)
-    })
-}
-
+// Start server
+server.listen(PORT, () => {
+    console.log("Server running at :: ", `http://localhost:${PORT}`);
+});

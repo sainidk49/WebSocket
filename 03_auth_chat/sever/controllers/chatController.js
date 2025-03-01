@@ -58,7 +58,10 @@ const getMessages = async (req, res) => {
   }
 
   try {
-    const messages = await Chat.find({ senderId, receiverId }).sort({ timestamp: 1 });
+    const messages = await Chat.find({ $or: [
+      { senderId, receiverId },
+      { senderId: receiverId, receiverId: senderId },
+    ] }).sort({ timestamp: 1 });
     
     res.status(200).json({ status: true, messages });
   } catch (error) {
