@@ -8,10 +8,13 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
+const User = require('./models/userModel');
+const Chat = require('./models/chatModel');
+
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const usersRoutes = require('./routes/usersRoute');
-const { onConnected } = require('./sockets/socket');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -57,51 +60,123 @@ const startServer = async () => {
 
 startServer();
 
+
 ////////////////// socket .io connection for real-time messaging ////////
-let users = [];
-
-const addUser = (userId, socketId) => {
-  if (!users.some(user => user.userId === userId)) {
-    users.push({ userId, socketId });
-  }
-};
-
-const removeUser = (socketId) => {
-  users = users.filter(user => user.socketId !== socketId);
-};
-
-const getUser = (userId) => {
-  return users.find(user => user.userId === userId);
-};
-
 io.on('connection', (socket) => {
-  socket.on('addUser', (userId) => {
-    addUser(userId, socket.id);
-    console.log('Connected users:', users);
-  });
+  let userId;
 
-  socket.on('sendMessage', ({ senderId, receiverId, content }) => {
-    const receiver = getUser(receiverId); 
-    // console.log("receiver", receiverId);
-    
-    if (receiver) {
-      // console.log("Receiver socket ID:", receiver.socketId);
-      socket.to(receiver.socketId).emit('getMessage', { senderId, content });
-    } else {
-      console.log("Receiver not found");
+  socket.on('userLogin', async (id) => {
+    try {
+      userId = id;
+      const user = await User.findById(userId);
+      if (user) {
+        user.socketId = socket.id;
+        user.isOnline = true;
+        await user.save();
+        console.log(`User ${userId} logged in with socket ID: ${socket.id}`);
+      }
+    } catch (error) {
+      console.error('Error logging in user:', error);
     }
   });
-  
-  socket.on('typing', ({ receiverId, typing }) => {
-    // console.log(receiverId, typing);
-    const receiver = getUser(receiverId);
-    if(receiver) {
-      socket.to(receiver.socketId).emit('typing', typing);
+
+  socket.on('userRegister', async (id) => {
+    try {
+      userId = id;
+      const user = await User.findById(userId);
+      if (user) {
+        user.socketId = socket.id;
+        user.isOnline = true;
+        await user.save();
+        console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+      }
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  });
+
+  socket.on('sendMessage', async ({ senderId, receiverId, message }) => {
+    try {
+      const recipient = await User.findById(receiverId);
+      if (recipient && recipient.socketId) {
+        socket.to(recipient.socketId).emit('receiveMessage', {
+          senderId,
+          receiverId,
+          message
+        });
+        console.log(`Message sent to user ${receiverId}: ${message}, and socket id: ${recipient.socketId}`);
+      } else {
+        console.log(`User ${receiverId} not found or not connected`);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  });
+
+  socket.on('typing', async ({ senderId, receiverId, typing }) => {
+    try {
+      const recipient = await User.findById(receiverId);
+      if (recipient && recipient.socketId) {
+        socket.to(recipient.socketId).emit('typing', {
+          senderId,
+          receiverId,
+          typing
+        });
+      } else {
+        console.log(`User ${receiverId} not found or not connected`);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
     }
   })
 
-  socket.on("disconnect", () => {
-    removeUser(socket.id);
-    console.log('User disconnected:', socket.id);
+  // socket.on("chatLsit", async (senderId) => {
+  //   console.log("senderId")
+  //   const userId = senderId;
+
+  //   // Find chats where the user is either sender or receiver
+  //   const chats = await Chat.find({
+  //     $or: [{ senderId: userId }, { receiverId: userId }]
+  //   })
+  //     .populate('senderId', 'name profilePic')
+  //     .populate('receiverId', 'name profilePic')
+  //     .sort({ updatedAt: -1 });
+
+  //   // Format chat list
+  //   const chatList = [];
+  //   const uniqueUsers = new Set();
+
+  //   chats.forEach(chat => {
+  //     const otherUser = chat.senderId._id.toString() === userId ? chat.receiverId : chat.senderId;
+
+  //     if (!uniqueUsers.has(otherUser._id.toString())) {
+  //       uniqueUsers.add(otherUser._id.toString());
+  //       chatList.push({
+  //         userId: otherUser._id,
+  //         userName: otherUser.name,
+  //         profilePic: otherUser.profilePic || '/assets/images/default-user.jpg',
+  //         lastMessage: chat.content,
+  //         timestamp: chat.updatedAt,
+  //       });
+  //     }
+  //   });
+  //   socket.emit("chatLsit", chatList)
+  // })
+
+  socket.on('disconnect', async () => {
+    try {
+      if (userId) {
+        const user = await User.findById(userId);
+        if (user) {
+          user.socketId = null;
+          user.isOnline = false;
+          await user.save();
+          console.log(`User ${userId} disconnected`);
+        }
+      }
+    } catch (error) {
+      console.error('Error on disconnect:', error);
+    }
   });
-})
+});
+

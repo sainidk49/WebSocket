@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
                     setIsExpired(true);
                     // localStorage.removeItem('token');
                     localStorage.clear();
+                    
                 } else {
                     setUser(decoded);
                 }

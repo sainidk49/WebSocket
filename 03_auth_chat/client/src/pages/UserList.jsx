@@ -9,7 +9,7 @@ const UserList = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null);
 
-
+    /////////// fetch all register users ////////////
     useEffect(() => {
         const getUsers = async () => {
             try {
@@ -20,8 +20,6 @@ const UserList = () => {
 
                 if (data.status === true) {
                     const userData = data.users.filter(user => user._id !== localStorage.getItem("senderId"))
-                    console.log(localStorage.getItem("senderId"))
-                    console.log(userData)
                     setUsers(userData);
                 } else {
                     setError(data.message);
@@ -36,6 +34,7 @@ const UserList = () => {
         getUsers();
     }, [baseUrl]);
 
+    /////////// start chat ////////////
     const handleUserClick = async (receiverId, receiverName) => {
         navigate('/chat', { state: { receiverId, receiverName } });
     };

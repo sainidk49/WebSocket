@@ -93,6 +93,10 @@ const loginUser = async (req, res) => {
       return res.status(404).json({ status: false, message: 'User not found' });
     }
 
+    if(user.isOnline){
+      return res.status(400).json({ status: false, message: 'Already logged in in another device'})
+    }
+
     // const otp = await sendOTP(email);
     const otp = 3698;
     await User.findByIdAndUpdate(user._id, { ...req.body, otp }, { new: true });
@@ -107,8 +111,6 @@ const loginUser = async (req, res) => {
 // Verify OTP and login
 const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
-  console.log(req.body)
-  console.log(otp)
   const user = await User.findOne({ email });
   if (user && user.otp === otp) {
     user.isVerified = true;

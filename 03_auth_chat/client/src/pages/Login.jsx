@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
+import socketIOClient from 'socket.io-client';
 
 const Login = () => {
   const { baseUrl } = useAuth();
@@ -38,8 +39,17 @@ const Login = () => {
   };
 
 
+  //////////// on enter send OTP //////////
+  const handleKeyDownEmail = (event) => {
+    if (event.key === 'Enter') {
+      handleSendOtp()
+    }
+  };
+
+
   //////////// handle login //////////
   const handleLogin = async () => {
+    const socket = socketIOClient(baseUrl);
     try {
       verifyBtnRef.current.disabled = true
       const res = await fetch(baseUrl + '/api/auth/verify-otp', {
@@ -49,10 +59,11 @@ const Login = () => {
       }).then(res => res.json());
 
       if (res.status) {
-        console.log(res)
+
         localStorage.setItem("token", res.token)
         localStorage.setItem('senderId', res.userId);
         localStorage.setItem('userName', res.userName);
+        socket.emit('userLogin', res.userId);
         navigate('/');
       }
       else {
@@ -62,13 +73,21 @@ const Login = () => {
     } catch (error) {
       alert(error);
     }
-    finally{
+    finally {
       verifyBtnRef.current.disabled = false
     }
   };
 
+  //////////// on enter login //////////
+  const handleKeyDownOtp = (event) => {
+    if (event.key === 'Enter') {
+      handleLogin()
+    }
+  };
+
+
   return (
-    <div className="relative w-full h-full text-white px-5">
+    <div className="blur-layer relative w-full h-full text-white px-5">
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10/12 max-w-md bg-black opacity-80 p-6 rounded-lg shadow-lg">
         {!isOtpSent ? (
           <>
@@ -76,6 +95,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDownEmail}
               placeholder="Enter email"
               className="w-full p-3 mb-5 bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -93,6 +113,7 @@ const Login = () => {
               type="text"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
+              onKeyDown={handleKeyDownOtp}
               placeholder="Enter OTP"
               className="w-full p-3 mb-4 bg-gray-800 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

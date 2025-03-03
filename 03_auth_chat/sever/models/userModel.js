@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   otp: { type: String },
   socketId: { type: String, default: null },
+  isOnline: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
 }, {
   timestamps: true
