@@ -6,11 +6,12 @@ import axios from 'axios';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { baseUrl } = useAuth();
+  const { baseUrl, getMessageAudio } = useAuth();
   const [chatList, setChatList] = useState([]);
   const [unseenCounts, setUnseenCounts] = useState({});
   const socketRef = useRef(null);
   const senderId = localStorage.getItem('senderId');
+
 
   ////////// register socket and get chat list /////////
   useEffect(() => {
@@ -21,8 +22,18 @@ const Home = () => {
     socketRef.current.emit('userLogin', senderId);
 
     socketRef.current.on('receiveMessage', async ({ message }) => {
-      await fetchChatList()
+      try {
+        if (getMessageAudio) {
+          getMessageAudio.volume = 1
+          getMessageAudio.play().catch((error) => console.error('Error playing audio:', error));
+        }
+
+        await fetchChatList();
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      }
     });
+
 
     return () => {
       // socketRef.current.off('chatList');

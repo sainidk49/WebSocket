@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthProvider';
 import socketIOClient from 'socket.io-client';
 
 const Register = () => {
-  const { baseUrl } = useAuth();
+  const { baseUrl, setGetMessageAudio, setSendMessageAudio } = useAuth();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [otp, setOtp] = useState('');
@@ -67,6 +67,15 @@ const Register = () => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('senderId', res.userId);
         localStorage.setItem('userName', res.userName);
+
+        const receive = new Audio('/assets/audio/receive.mp3')
+        receive.volume = 0
+        setGetMessageAudio(receive)
+
+        const send = new Audio('/assets/audio/send.mp3')
+        send.volume = 0
+        setSendMessageAudio(send)
+
         socket.emit('userRegister', res.userId);
         navigate('/');
       }

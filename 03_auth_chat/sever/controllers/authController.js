@@ -77,6 +77,7 @@ const registerUser = async (req, res) => {
 
 // Register a new user
 const loginUser = async (req, res) => {
+  console.log(req)
   try {
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ status: false, message: 'User data not provided!' });

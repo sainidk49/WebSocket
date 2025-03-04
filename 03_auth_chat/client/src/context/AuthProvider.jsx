@@ -9,8 +9,10 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [getMessageAudio, setGetMessageAudio] = useState(null);
+    const [sendMessageAudio, setSendMessageAudio] = useState(null);
     const [isExpired, setIsExpired] = useState(false);
-    const baseUrl = 'http://192.168.1.116:5500';
+    const baseUrl = 'http://192.168.1.130:5500';
 
     useEffect(() => {
         const userToken = localStorage.getItem('token');
@@ -41,7 +43,13 @@ const AuthProvider = ({ children }) => {
     }, [isExpired]);
 
     return (
-        <AuthContext.Provider value={{ user, baseUrl }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            baseUrl, 
+            getMessageAudio, 
+            setGetMessageAudio, 
+            sendMessageAudio, 
+            setSendMessageAudio }}>
             {children}
         </AuthContext.Provider>
     );

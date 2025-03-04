@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthProvider';
 import socketIOClient from 'socket.io-client';
 
 const Login = () => {
-  const { baseUrl } = useAuth();
+  const { baseUrl, setGetMessageAudio, setSendMessageAudio } = useAuth();
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -14,6 +14,7 @@ const Login = () => {
 
   //////////// handle send OTP //////////
   const handleSendOtp = async () => {
+    console.log(baseUrl)
     try {
       sendBtnRef.current.disabled = true
       const res = await fetch(baseUrl + '/api/auth/login', {
@@ -59,10 +60,18 @@ const Login = () => {
       }).then(res => res.json());
 
       if (res.status) {
-
         localStorage.setItem("token", res.token)
         localStorage.setItem('senderId', res.userId);
         localStorage.setItem('userName', res.userName);
+
+        const receive = new Audio('/assets/audio/receive.mp3')
+        receive.volume = 0
+        setGetMessageAudio(receive)
+
+        const send = new Audio('/assets/audio/send.mp3')
+        send.volume = 0
+        setSendMessageAudio(send)
+
         socket.emit('userLogin', res.userId);
         navigate('/');
       }

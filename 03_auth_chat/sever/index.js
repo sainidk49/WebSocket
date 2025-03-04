@@ -20,13 +20,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: 'http://192.168.1.116:5173',  // Frontend URL
+    origin: 'http://192.168.1.130:5173',  // Frontend URL
     methods: ['GET', 'POST'],
   }
 });
 
 app.use(cors({
-  origin: 'http://192.168.1.116:5173',
+  origin: 'http://192.168.1.130:5173',
   methods: ['GET', 'POST'],
 }));
 

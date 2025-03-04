@@ -49,7 +49,6 @@ function addMessageUI(isOwnMessage, data) {
     if (isOwnMessage) {
         console.log("hello")
         mesageSend.play()
-        
     }
     else{
         mesageRecieve.play()

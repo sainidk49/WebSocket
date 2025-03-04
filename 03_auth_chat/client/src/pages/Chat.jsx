@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import socketIOClient from 'socket.io-client';
 import axios from 'axios';
 import { useAuth } from '../context/AuthProvider';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Chat = () => {
   const location = useLocation();
-  const { baseUrl } = useAuth();
+  const navigate = useNavigate();
+  const { baseUrl, getMessageAudio, sendMessageAudio } = useAuth();
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
   const messageInputRef = useRef(null);
@@ -38,6 +39,10 @@ const Chat = () => {
         { content: message, createdAt: new Date().toISOString(), isOwnMessage: sender === senderId }
         ]);
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (getMessageAudio) {
+          getMessageAudio.volume = 1
+          getMessageAudio.play()
+        }
       }
     });
 
@@ -101,10 +106,16 @@ const Chat = () => {
     }
 
     setMessage('');
+
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    if (sendMessageAudio) {
+      sendMessageAudio.volume = 1
+      sendMessageAudio.play()
+    }
   }, [message, senderId, receiverId]);
 
-  
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       sendMessage()
@@ -136,10 +147,15 @@ const Chat = () => {
       <div className="relative w-full h-full">
         {/* Header */}
         <div className="chat-list-item w-full flex gap-x-2 pb-2 mb-5">
-          <div className="user-img w-5 rounded-full overflow-hidden">
-            <img src="/assets/images/user-icon.jpg" alt="User" />
+          <div className="w-full flex gap-x-2">
+            <div className="user-img w-5 rounded-full overflow-hidden">
+              <img src="/assets/images/user-icon.jpg" alt="User" />
+            </div>
+            <p className="text-sm capitalize">{receiverName}</p>
           </div>
-          <p className="text-sm capitalize">{receiverName}</p>
+          <div className="ml-auto" onClick={()=> navigate('/')}>
+            <img src="/assets/images/back.png" className='w-4'  alt="" />
+          </div>
         </div>
 
         {/* Messages */}
