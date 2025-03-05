@@ -19,6 +19,8 @@ const Chat = () => {
   const senderId = localStorage.getItem("senderId");
   const receiverId = location.state?.receiverId;
   const receiverName = location.state?.receiverName;
+  const receiverProfile = location.state?.profilePicture;
+  const description = location.state?.description;
 
   useEffect(() => {
     if (!senderId || !receiverId) return;
@@ -149,12 +151,15 @@ const Chat = () => {
         <div className="chat-list-item w-full flex gap-x-2 pb-2 mb-5">
           <div className="w-full flex gap-x-2">
             <div className="user-img w-5 rounded-full overflow-hidden">
-              <img src="/assets/images/user-icon.jpg" alt="User" />
+              <img src={receiverProfile} alt="User" />
             </div>
-            <p className="text-sm capitalize">{receiverName}</p>
+            <div className="">
+              <p className="text-sm capitalize">{receiverName}</p>
+              <p className="text-sm">{description}</p>
+            </div>
           </div>
-          <div className="ml-auto" onClick={()=> navigate('/')}>
-            <img src="/assets/images/back.png" className='w-4'  alt="" />
+          <div className="ml-auto" onClick={() => navigate('/')}>
+            <img src="/assets/images/back.png" className='w-4' alt="" />
           </div>
         </div>
 

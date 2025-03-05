@@ -45,6 +45,7 @@ const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{ 
             user, 
+            setUser,
             baseUrl, 
             getMessageAudio, 
             setGetMessageAudio, 

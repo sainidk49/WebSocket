@@ -35,8 +35,8 @@ const UserList = () => {
     }, [baseUrl]);
 
     /////////// start chat ////////////
-    const handleUserClick = async (receiverId, receiverName) => {
-        navigate('/chat', { state: { receiverId, receiverName } });
+    const handleUserClick = async (receiverId, receiverName, profilePicture, description) => {
+        navigate('/chat', { state: { receiverId, receiverName, profilePicture, description } });
     };
 
     if (loading) {
@@ -54,9 +54,9 @@ const UserList = () => {
                     users.map((user, index) => (
                         <div key={index}
                             className="chat-list-item w-full flex gap-x-4 pb-3 mb-5"
-                            onClick={() => handleUserClick(user._id, user.name)}>
+                            onClick={() => handleUserClick(user._id, user.name, user.profile, user.description)}>
                             <div className="user-img w-6 rounded-full overflow-hidden">
-                                <img src="/assets/images/user-icon.jpg" alt="User" />
+                                <img src={user.profile} alt="User" />
                             </div>
                             <p className='text-md capitalize'>
                                 {user.name}

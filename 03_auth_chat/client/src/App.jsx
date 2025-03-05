@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import AuthProvider from './context/AuthProvider';
 import "./App.css"
 import UserList from './pages/UserList';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/users" element={<UserList />} />
                 <Route path="/chat" element={<Chat />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
             </Routes>
           </BrowserRouter>

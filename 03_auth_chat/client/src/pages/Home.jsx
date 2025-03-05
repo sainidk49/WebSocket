@@ -86,7 +86,7 @@ const Home = () => {
   }, [chatList]);
 
   ////////// mark unseen counts ////////
-  const markUnseenCount = useCallback(async (userId, userName) => {
+  const markUnseenCount = useCallback(async (userId, userName, profilePicture) => {
     try {
       const receiverId = userId;
 
@@ -94,7 +94,7 @@ const Home = () => {
       const updatedUnseenCounts = { ...unseenCounts, [receiverId]: res.data.unseenMessages };
       setUnseenCounts(updatedUnseenCounts);
 
-      navigate('/chat', { state: { receiverId: userId, receiverName: userName } });
+      navigate('/chat', { state: { receiverId: userId, receiverName: userName, profilePicture } });
     } catch (error) {
       console.error('Error fetching unseen count:', error);
     }
@@ -110,10 +110,10 @@ const Home = () => {
           {chatList.map((chat) => (
             <div
               key={chat.userId}
-              onClick={() => markUnseenCount(chat.userId, chat.userName)}
+              onClick={() => markUnseenCount(chat.userId, chat.userName, chat.profile)}
               className="chat-list-item w-full flex gap-x-4 pb-3 mb-5">
               <div className="user-img w-7 h-7 rounded-full overflow-hidden">
-                <img src="/assets/images/user-icon.jpg" alt="" />
+                <img src={chat.profile} alt="" />
               </div>
               <div className="w-fit">
                 <p className='text-sm capitalize mb-0 text-left'>
@@ -131,15 +131,26 @@ const Home = () => {
                     <p style={{ fontSize: "0.6rem" }}>{unseenCounts[chat.userId]}</p>
                   </div> : ''
                 }
-
               </div>
             </div>
           ))}
         </div>
       )}
-      <div className="add-user absolute right-2.5 bottom-2.5">
-        <button onClick={() => navigate('/users')} className="bg-linear-to-r from-blue-500 to-cyan-500 text-white text-sm py-2 px-5 rounded-xl">Add User</button>
+
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 w-8/12 p-2 px-4 bg-white rounded-full flex justify-around">
+        <div className="update-profile bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/profile')} >
+          <img src="/assets/images/user-profile.png" alt="user-profile" />
+        </div>
+
+        <div className="make-group bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/users')} >
+          <img src="/assets/images/make-group.png" alt="make-group" />
+        </div>
+
+        <div className="add-user bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/users')} >
+          <img src="/assets/images/add-user.png" alt="add-user" />
+        </div>
       </div>
+
     </div>
   );
 };

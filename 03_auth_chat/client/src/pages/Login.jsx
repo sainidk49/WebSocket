@@ -2,19 +2,20 @@ import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import socketIOClient from 'socket.io-client';
+import MessagePopup from '../components/popups/Message';
 
 const Login = () => {
-  const { baseUrl, setGetMessageAudio, setSendMessageAudio } = useAuth();
+  const { baseUrl, setGetMessageAudio, setSendMessageAudio, setUser } = useAuth();
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const sendBtnRef = useRef()
   const verifyBtnRef = useRef()
   const navigate = useNavigate();
+  const [isError, setIsError] = useState('')
 
   //////////// handle send OTP //////////
   const handleSendOtp = async () => {
-    console.log(baseUrl)
     try {
       sendBtnRef.current.disabled = true
       const res = await fetch(baseUrl + '/api/auth/login', {
@@ -29,7 +30,7 @@ const Login = () => {
       if (res.status) {
         setIsOtpSent(true);
       } else {
-        alert(res.message);
+        setIsError(res.message)
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -63,7 +64,7 @@ const Login = () => {
         localStorage.setItem("token", res.token)
         localStorage.setItem('senderId', res.userId);
         localStorage.setItem('userName', res.userName);
-
+        setUser({name: res.userName, email: res.email, profile: res.profile})
         const receive = new Audio('/assets/audio/receive.mp3')
         receive.volume = 0
         setGetMessageAudio(receive)
@@ -74,9 +75,10 @@ const Login = () => {
 
         socket.emit('userLogin', res.userId);
         navigate('/');
+
       }
       else {
-        alert(res.message)
+        setIsError(res.message)
       }
 
     } catch (error) {
@@ -94,6 +96,9 @@ const Login = () => {
     }
   };
 
+  if (isError) {
+    return <MessagePopup message={isError} setIsError={setIsError} />
+  }
 
   return (
     <div className="blur-layer relative w-full h-full text-white px-5">

@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import socketIOClient from 'socket.io-client';
+import MessagePopup from '../components/popups/Message';
 
 const Register = () => {
   const { baseUrl, setGetMessageAudio, setSendMessageAudio } = useAuth();
@@ -13,6 +14,7 @@ const Register = () => {
   const sendBtnRef = useRef()
   const verifyBtnRef = useRef()
   const navigate = useNavigate();
+  const [isError, setIsError] = useState('')
 
   ////////// fill name emal //////////
   const handleRegister = async () => {
@@ -80,12 +82,12 @@ const Register = () => {
         navigate('/');
       }
       else {
-        alert(res.message);
+        setIsError(res.message)
       }
     }
     catch (error) {
       console.error('Error verifying OTP:', error);
-      alert('Invalid OTP. Please try again.');
+      setIsError(res.message)
     }
     finally {
       verifyBtnRef.current.disabled = false
@@ -98,6 +100,12 @@ const Register = () => {
       handleVerifyOTP()
     }
   };
+  
+
+  if (isError) {
+    return <MessagePopup message={isError} setIsError={setIsError} />
+  }
+
 
   return (
     <div className="blur-layer relative w-full h-full text-white px-5">

@@ -85,8 +85,8 @@ const getChatList = async (req, res) => {
     const chats = await Chat.find({
       $or: [{ senderId: userId }, { receiverId: userId }]
     })
-      .populate('senderId', 'name profilePic')
-      .populate('receiverId', 'name profilePic')
+      .populate('senderId', 'name profile')
+      .populate('receiverId', 'name profile')
       .sort({ updatedAt: -1 });
 
     // Format chat list
@@ -101,7 +101,8 @@ const getChatList = async (req, res) => {
         chatList.push({
           userId: otherUser._id,
           userName: otherUser.name,
-          profilePic: otherUser.profilePic || '/assets/images/default-user.jpg',
+          profile: otherUser.profile,
+          description: chat.description,
           lastMessage: chat.content,
           timestamp: chat.updatedAt,
         });
