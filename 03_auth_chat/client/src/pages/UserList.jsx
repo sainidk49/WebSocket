@@ -44,7 +44,11 @@ const UserList = () => {
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return (
+            <div className="blur-layer relative w-full h-full bg-cover bg-center text-white px-5">
+                <div>Error: {error}</div>
+            </div>
+        )
     }
 
     return (
@@ -55,7 +59,7 @@ const UserList = () => {
                 </div>
                 Users List
             </div>
-            
+
             <div className="chat-list w-full py-5">
                 {users && users.length > 0 ? (
                     users.map((user, index) => (
