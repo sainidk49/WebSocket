@@ -61,15 +61,29 @@ const registerUser = async (req, res) => {
       return res.status(400).json(validation);
     }
 
+
+
+    const user = await User.findOne({ email: req.body.email });
+    if (user && user.isVerified) {
+      return res.status(400).json({ status: false, message: 'Email already exists!' })
+    }
+
+
     const { name, email } = req.body;
 
     // const otp = await sendOTP(email);
     const otp = 3698;
 
+    if (user) {
+      await User.updateOne({ email: req.body.email }, { $set: { otp: otp } });
+      return res.status(200).json({ status: true, message: 'OTP sent to email' });
+    }
+
     const newUser = new User({ name, email, otp });
     await newUser.save();
-    res.status(200).json({ status: true, message: 'OTP sent to email' });
+    return res.status(200).json({ status: true, message: 'OTP sent to email' });
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ status: false, message: error.message });
   }
 };
@@ -93,8 +107,12 @@ const loginUser = async (req, res) => {
       return res.status(404).json({ status: false, message: 'User not found' });
     }
 
-    if(user.isOnline){
-      return res.status(400).json({ status: false, message: 'Already logged in in another device'})
+    if (user.isOnline) {
+      return res.status(400).json({ status: false, message: 'Already logged in in another device.' })
+    }
+
+    if (!user.isVerified) {
+      return res.status(400).json({ status: false, message: 'Please complete your regiteration.' })
     }
 
     // const otp = await sendOTP(email);

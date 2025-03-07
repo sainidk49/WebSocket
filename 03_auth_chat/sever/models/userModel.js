@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true,},
   otp: { type: String },
   profile: { type: String, default: 'https://img.freepik.com/free-vector/user-blue-gradient_78370-4692.jpg' },
   description: { type: String, default: "Hi there! I'm using this app." },

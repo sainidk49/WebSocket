@@ -15,8 +15,8 @@ const Message = ({ message, setIsError }) => {
   return (
     <div className='relative w-full h-full blur-layer flex justify-center items-center'>
       <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-8/12 max-w-sm rounded-xl p-5'>
-        <p className='text-xl text-gray-700 mb-4'>{capitalise(message)}</p>
-        <button onClick={handleClose} className='w-8/12 p-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg'>
+        <p className='text-sm text-gray-700 mb-4'>{capitalise(message)}</p>
+        <button onClick={handleClose} className=' text-sm w-8/12 p-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg'>
           Close
         </button>
       </div>

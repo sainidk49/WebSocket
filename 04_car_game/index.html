@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover" />
+    <title>Web Socket Testing</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+
+<body>
+    <div class="main-hero">
+        <div class="game-handle-sec">
+            <div class="operator-handing">
+                <button class="handle-btn top" id="top"><img src="assets/images/icons/circle-up.svg"
+                        alt="circle-up"></button>
+                <button class="handle-btn left" id="left"><img src="assets/images/icons/circle-left.svg"
+                        alt="circle-left"></button>
+                <button class="handle-btn right" id="right"><img src="assets/images/icons/circle-right.svg"
+                        alt="circle-right"></button>
+                <button class="handle-btn bottom" id="bottom"><img src="assets/images/icons/circle-down.svg"
+                        alt="circle-down"></button>
+            </div>
+            <div class="tigger">
+                <button class="tigger-btn" id="accelerator"><img src="assets/images/icons/tigger.svg"
+                        alt="tigger"></button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-socket-js/1.0.0/web_socket.min.js"
+        integrity="sha512-jtr9/t8rtBf1Sv832XjG1kAtUECQCqFnTAJWccL8CSC82VGzkPPih8rjtOfiiRKgqLXpLA1H/uQ/nq2bkHGWTQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            const socket = new WebSocket("ws://192.168.1.249:8080");
+            socket.onopen = () => console.log("Connected to WebSocket server.");
+            let operateArr = [
+                {key: "accelerator", pressed: false},
+                {key: "top", pressed: false},
+                {key: "left", pressed: false},
+                {key: "right", pressed: false},
+                {key: "bottom", pressed: false}
+            ];
+        
+            const buttons = ["accelerator", "top", "left", "right", "bottom"];
+        
+            buttons.forEach(buttonId => {
+                const button = document.getElementById(buttonId);
+                button.addEventListener("mousedown", function () {
+                    updateButtonState(buttonId, true);
+                });
+                button.addEventListener("mouseup", function () {
+                    updateButtonState(buttonId, false);
+                });
+            });
+        
+            function updateButtonState(buttonId, pressed) {
+                // Directly update the pressed state in operateArr
+                operateArr.forEach((operation, index) => {
+                    if (operation.key === buttonId) {
+                        console.log(`Updating ${buttonId} to ${pressed}`);
+                        operation.pressed = pressed;
+                    }
+                });
+        
+                const dataToSend = {action: "operation", keysOperate: operateArr};
+                console.log(operateArr[0]);
+        
+                // Send the updated data to the WebSocket server
+                // socket.send(JSON.stringify(dataToSend));
+            }
+        </script>
+        
+</body>
+
+</html>

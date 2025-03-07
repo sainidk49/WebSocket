@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'Google Sans';
+    src: url('fonts/GoogleSans-Regular.eot');
+    src: url('fonts/GoogleSans-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/GoogleSans-Regular.woff2') format('woff2'),
+        url('fonts/GoogleSans-Regular.woff') format('woff'),
+        url('fonts/GoogleSans-Regular.ttf') format('truetype'),
+        url('fonts/GoogleSans-Regular.svg#GoogleSans-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-family: 'Google Sans';
+    text-decoration: none;
+}
+
+.main-hero {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #f6f8fc;
+}
+
+
+.game-handle-sec {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content:  center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.operator-handing {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+}
+
+.operator-handing .handle-btn{
+    position: absolute;
+    background: rgb(255, 115, 0);
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.operator-handing .handle-btn.top{
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.operator-handing .handle-btn.bottom{
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.operator-handing .handle-btn.left{
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.operator-handing .handle-btn.right{
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.game-handle-sec .tigger{
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+}
+
+.game-handle-sec .tigger .tigger-btn{
+    background: rgb(255, 115, 0);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}

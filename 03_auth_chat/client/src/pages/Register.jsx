@@ -30,10 +30,10 @@ const Register = () => {
 
       if (res.status === true) {
         setIsOtpSent(true);
-        alert(res.message);
+        setIsError(res.message)
       }
       else {
-        alert(res.message);
+        setIsError(res.message)
       }
 
     } catch (error) {
@@ -100,7 +100,7 @@ const Register = () => {
       handleVerifyOTP()
     }
   };
-  
+
 
   if (isError) {
     return <MessagePopup message={isError} setIsError={setIsError} />

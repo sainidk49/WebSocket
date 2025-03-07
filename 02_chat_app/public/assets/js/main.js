@@ -9,9 +9,11 @@ const connectedUsers = document.getElementById('activeUsers');
 const mesageSend = new Audio("assets/audio/message.mp3")
 const mesageRecieve = new Audio("assets/audio/send.mp3")
 
+
 socket.on("total-users", (data) => {
     connectedUsers.innerText = `${data}`;
 });
+
 
 messageForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -77,9 +79,11 @@ messageInput.addEventListener("blur", (e) => {
     })
 });
 
+
 socket.on("typing", (data) => {
     userActive.innerText = data.typing;
 })
+
 
 function scrollToBottom() {
     messageListBx.scrollTop = messageListBx.scrollHeight;

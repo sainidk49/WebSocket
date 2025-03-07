@@ -49,6 +49,13 @@ const UserList = () => {
 
     return (
         <div className="blur-layer relative w-full h-full bg-cover bg-center text-white px-5">
+            <div className="w-full flex gap-x-4 py-2 items-center border-b-1 border-b-gray-500">
+                <div className="" onClick={() => navigate('/')}>
+                    <img src="/assets/images/back.png" className='w-4' alt="" />
+                </div>
+                Users List
+            </div>
+            
             <div className="chat-list w-full py-5">
                 {users && users.length > 0 ? (
                     users.map((user, index) => (

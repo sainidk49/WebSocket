@@ -9,11 +9,12 @@ import AuthProvider from './context/AuthProvider';
 import "./App.css"
 import UserList from './pages/UserList';
 import Profile from './pages/Profile';
+import ProfileImage from './components/profile/ProfileImage';
 
 function App() {
   return (
     <div className='main-hero'>
-      <div className='common-section relative w-full h-full bg-[url(/assets/images/bg.jpg)]'>
+      <div className='common-section relative w-full h-full bg-[url(/assets/images/bg.jpg)] max-w-md mx-auto'>
         <AuthProvider>
           <BrowserRouter>
             <Routes>
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/users" element={<UserList />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/profile-image" element={<ProfileImage />} />
               </Route>
             </Routes>
           </BrowserRouter>

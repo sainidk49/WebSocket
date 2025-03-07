@@ -64,7 +64,7 @@ const Login = () => {
         localStorage.setItem("token", res.token)
         localStorage.setItem('senderId', res.userId);
         localStorage.setItem('userName', res.userName);
-        setUser({name: res.userName, email: res.email, profile: res.profile})
+        setUser({ name: res.userName, email: res.email, profile: res.profile })
         const receive = new Audio('/assets/audio/receive.mp3')
         receive.volume = 0
         setGetMessageAudio(receive)
