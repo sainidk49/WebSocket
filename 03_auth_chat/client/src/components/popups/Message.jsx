@@ -25,35 +25,3 @@ const Message = ({ message, setIsError }) => {
 }
 
 export default Message
-
-const popupStyles = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  popup: {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    textAlign: 'center',
-  },
-
-  closeButton: {
-    marginTop: '10px',
-    padding: '5px 10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  }
-};

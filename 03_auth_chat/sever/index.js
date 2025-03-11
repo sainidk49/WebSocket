@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const path =  require('path')
 const cors = require('cors');
 const socketIo = require('socket.io');
 const connectDB = require('./config/db');
@@ -9,7 +10,6 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const User = require('./models/userModel');
-const Chat = require('./models/chatModel');
 
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
@@ -18,6 +18,9 @@ const usersRoutes = require('./routes/usersRoute');
 
 const app = express();
 const server = http.createServer(app);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const io = socketIo(server, {
   cors: {
     origin: 'http://192.168.1.130:5173',  // Frontend URL

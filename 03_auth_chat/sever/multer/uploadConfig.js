@@ -1,7 +1,8 @@
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import axios from 'axios';
+
+const multer = require("multer")
+const fs = require("fs")
+const path = require("path")
+const axios = require("axios")
 
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) {
@@ -21,7 +22,7 @@ const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
-        const fileTypes = /jpeg|jpg|png|gif/;
+        const fileTypes = /jpeg|jpg|png/;
         const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = fileTypes.test(file.mimetype);
 
@@ -35,27 +36,34 @@ const upload = multer({
 
 
 // Function to delete old images
-export const deleteOldImage = (filename) => {
+
+const deleteOldImage = (imageUrl) => {
     try {
-        const filePath = filename;
-        // Log the file path for debugging
-        console.log(`Attempting to delete file at: ${filePath}`);
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-            console.log(`Successfully deleted: ${filePath}`);
-            return true
+        const parsedUrl = new URL(imageUrl);
+        
+        const filePath = parsedUrl.pathname;
+        
+        const imageName = path.basename(filePath);
+
+        console.log(`Attempting to delete file at: ${imageName}`);
+
+        if (fs.existsSync(`uploads/${imageName}`)) {
+            fs.unlinkSync(`uploads/${imageName}`);
+            console.log(`Successfully deleted: ${imageName}`);
+            return true;
+
         } else {
-            console.warn(`File not found: ${filePath}`);
-            return false
+            console.warn(`File not found: ${imageName}`);
+            return false;
         }
     } catch (error) {
-        // Log any errors encountered during file deletion
         console.error(`Error deleting file: ${error.message}`);
+        return false;
     }
 };
 
 // Function to download an image from a URL and save it to a file
-export const saveImageFromUrl = async (imageUrl) => {
+const saveImageFromUrl = async (imageUrl) => {
     try {
         if (!imageUrl || imageUrl === "") {
             return null
@@ -84,4 +92,4 @@ export const saveImageFromUrl = async (imageUrl) => {
     }
 };
 
-export default upload;
+module.exports = { upload, deleteOldImage, saveImageFromUrl };

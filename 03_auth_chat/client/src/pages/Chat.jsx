@@ -150,12 +150,12 @@ const Chat = () => {
         {/* Header */}
         <div className="chat-list-item w-full flex gap-x-2 pb-2 mb-5">
           <div className="w-full flex gap-x-2">
-            <div className="user-img w-5 rounded-full overflow-hidden">
-              <img src={receiverProfile} alt="User" />
+            <div className="user-img w-10 rounded-full overflow-hidden">
+              <img src={receiverProfile || '/assets/images/user-icon.jpg'} alt="User" />
             </div>
             <div className="">
-              <p className="text-sm capitalize">{receiverName}</p>
-              <p className="text-sm">{description}</p>
+              <p className="text-sm capitalize text-left">{receiverName}</p>
+              <p style={{fontSize: '0.65rem'}}>{description}</p>
             </div>
           </div>
           <div className="ml-auto" onClick={() => navigate('/')}>

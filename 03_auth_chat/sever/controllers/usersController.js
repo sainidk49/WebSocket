@@ -1,5 +1,5 @@
 const User = require('../models/userModel');
-// import upload, { deleteOldImage, saveImageFromUrl } from '../multer/uploadConfig.js';
+const { upload, deleteOldImage, saveImageFromUrl } = require('../multer/uploadConfig.js');
 
 const getUsers = async (req, res) => {
     try {
@@ -15,22 +15,32 @@ const getUsers = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
-    const { userId, profile } = req.body;
+    const { userId } = req.params;
+    const { destination, filename } = req.file;
     try {
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ status: false, message: "User not found." });
         }
-        if (!profile) {
-            return res.status(400).json({ status: false, message: "Profile is required." });
+
+        let deleteProfile = false
+
+        if (user.profile) {
+            deleteProfile = await deleteOldImage(user.profile);
+
+            if (!deleteProfile) {
+                return res.status(500).json({ status: false, message: "Failed to delete old profile image." });
+            }
         }
 
-        await User.findByIdAndUpdate(userId, { $set: { profile, updatedAt: new Date() } }, { new: true })
+
+        const userProfile = `http://192.168.1.130:5500/${destination}/${filename}`
+        const updatedUser = await User.findByIdAndUpdate(userId, { $set: { profile: userProfile, updatedAt: new Date() } }, { new: true })
 
         // user.profile = profile;
         // await user.save();
 
-        return res.status(200).json({ status: true, message: "Successfull." })
+        return res.status(200).json({ status: true, message: "Successfull.", user: updatedUser })
 
     } catch (error) {
         console.log("Error :: ", error)
@@ -54,4 +64,22 @@ const getProfile = async (req, res) => {
     }
 }
 
-module.exports = { getUsers, updateProfile, getProfile }
+const updateDetails = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ status: false, message: "User not found." });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, { $set: req.body, updatedAt: new Date() }, { new: true})
+
+        return res.status(200).json({ status: true, message: "Successfull.", user: updatedUser })
+
+    } catch (error) {
+        console.log("Error :: ", error)
+        return res.status(200).json({ status: false, message: error.message })
+    }
+}
+
+module.exports = { getUsers, updateProfile, getProfile, updateDetails }

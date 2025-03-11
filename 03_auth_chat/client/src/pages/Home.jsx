@@ -86,15 +86,15 @@ const Home = () => {
   }, [chatList]);
 
   ////////// mark unseen counts ////////
-  const markUnseenCount = useCallback(async (userId, userName, profilePicture) => {
+  const markUnseenCount = useCallback(async (userId, userName, profilePicture, description) => {
     try {
       const receiverId = userId;
 
       const res = await axios.get(`${baseUrl}/api/chat/seen/${senderId}/${receiverId}`);
       const updatedUnseenCounts = { ...unseenCounts, [receiverId]: res.data.unseenMessages };
       setUnseenCounts(updatedUnseenCounts);
-
-      navigate('/chat', { state: { receiverId: userId, receiverName: userName, profilePicture } });
+      
+      navigate('/chat', { state: { receiverId: userId, receiverName: userName, profilePicture, description } });
     } catch (error) {
       console.error('Error fetching unseen count:', error);
     }
@@ -110,10 +110,10 @@ const Home = () => {
           {chatList.map((chat) => (
             <div
               key={chat.userId}
-              onClick={() => markUnseenCount(chat.userId, chat.userName, chat.profile)}
+              onClick={() => markUnseenCount(chat.userId, chat.userName, chat.profile, chat.description)}
               className="chat-list-item w-full flex gap-x-4 pb-3 mb-5">
-              <div className="user-img w-7 h-7 rounded-full overflow-hidden">
-                <img src={chat.profile} alt="" />
+              <div className="user-img w-10 h-10 rounded-full overflow-hidden">
+                <img src={chat.profile || '/assets/images/user-icon.jpg'} alt="" />
               </div>
               <div className="w-fit">
                 <p className='text-sm capitalize mb-0 text-left'>

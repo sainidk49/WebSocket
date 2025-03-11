@@ -1,6 +1,4 @@
 const Chat = require('../models/chatModel');
-const User = require('../models/userModel');
-
 const mongoose = require('mongoose');
 
 const validateUserData = (data, requiredFields) => {
@@ -85,8 +83,8 @@ const getChatList = async (req, res) => {
     const chats = await Chat.find({
       $or: [{ senderId: userId }, { receiverId: userId }]
     })
-      .populate('senderId', 'name profile')
-      .populate('receiverId', 'name profile')
+      .populate('senderId', 'name profile description')
+      .populate('receiverId', 'name profile description')
       .sort({ updatedAt: -1 });
 
     // Format chat list
@@ -102,7 +100,7 @@ const getChatList = async (req, res) => {
           userId: otherUser._id,
           userName: otherUser.name,
           profile: otherUser.profile,
-          description: chat.description,
+          description: otherUser.description,
           lastMessage: chat.content,
           timestamp: chat.updatedAt,
         });

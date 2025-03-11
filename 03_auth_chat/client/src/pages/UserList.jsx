@@ -67,7 +67,7 @@ const UserList = () => {
                             className="chat-list-item w-full flex gap-x-4 pb-3 mb-5"
                             onClick={() => handleUserClick(user._id, user.name, user.profile, user.description)}>
                             <div className="user-img w-6 rounded-full overflow-hidden">
-                                <img src={user.profile} alt="User" />
+                                <img src={user.profile || '/assets/images/user-icon.jpg'} alt="User" />
                             </div>
                             <p className='text-md capitalize'>
                                 {user.name}
