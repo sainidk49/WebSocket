@@ -77,7 +77,7 @@ const Profile = () => {
                 }}
             >
                 <div className="absolute top-0 left-0 w-full h-full"
-                    onClick={() => handleProfile(user?.profile)}></div>
+                    onClick={() => handleProfile(user?.profile || '/assets/images/user-icon.jpg')}></div>
                 {/* <img 
                     className='rounded-full'
                     src={user?.profile || '/assets/images/user-icon.jpg'}

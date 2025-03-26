@@ -34,7 +34,7 @@ const updateProfile = async (req, res) => {
         }
 
 
-        const userProfile = `http://192.168.0.107:5500/${destination}/${filename}`
+        const userProfile = `http://192.168.1.166:5500/${destination}/${filename}`
         const updatedUser = await User.findByIdAndUpdate(userId, { $set: { profile: userProfile, updatedAt: new Date() } }, { new: true })
 
         // user.profile = profile;

@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     const [getMessageAudio, setGetMessageAudio] = useState(null);
     const [sendMessageAudio, setSendMessageAudio] = useState(null);
     const [isExpired, setIsExpired] = useState(false);
-    const baseUrl = 'http://192.168.0.107:5500';
+    const baseUrl = 'http://192.168.1.166:5500';
 
     useEffect(() => {
         const userToken = localStorage.getItem('token');

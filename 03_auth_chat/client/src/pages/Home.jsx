@@ -93,7 +93,7 @@ const Home = () => {
       const res = await axios.get(`${baseUrl}/api/chat/seen/${senderId}/${receiverId}`);
       const updatedUnseenCounts = { ...unseenCounts, [receiverId]: res.data.unseenMessages };
       setUnseenCounts(updatedUnseenCounts);
-      
+
       navigate('/chat', { state: { receiverId: userId, receiverName: userName, profilePicture, description } });
     } catch (error) {
       console.error('Error fetching unseen count:', error);
@@ -138,17 +138,27 @@ const Home = () => {
       )}
 
       <div className="fixed bottom-3 left-1/2 -translate-x-1/2 w-8/12 p-2 px-4 bg-white rounded-full flex justify-around">
-        <div className="update-profile bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/profile')} >
-          <img src="/assets/images/user-profile.png" alt="user-profile" />
+        <div className="" onClick={() => navigate('/profile')} >
+          <div className="update-profile bg-blue-900 w-7 h-7 p-1.5 rounded-full">
+            <img src="/assets/images/user-profile.png" alt="user-profile" />
+          </div>
+          <p style={{ fontSize: '0.65rem' }} className='text-blue-900 text-sm mt-0.5'>Profile</p>
         </div>
 
-        <div className="make-group bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/users')} >
-          <img src="/assets/images/make-group.png" alt="make-group" />
+        <div className="" onClick={() => navigate('/users')} >
+          <div className="make-group bg-blue-900 w-7 h-7 p-1.5 rounded-full">
+            <img src="/assets/images/make-group.png" alt="make-group" />
+          </div>
+          <p style={{ fontSize: '0.65rem' }} className='text-blue-900 text-sm mt-0.5'>chats</p>
         </div>
 
-        <div className="add-user bg-blue-900 w-7 h-7 p-1.5 rounded-full" onClick={() => navigate('/users')} >
-          <img src="/assets/images/add-user.png" alt="add-user" />
+        <div className="text-center" onClick={() => navigate('/users')} >
+          <div className="add-user bg-blue-900 w-7 h-7 p-1.5 rounded-full">
+            <img src="/assets/images/add-user.png" alt="add-user" />
+          </div>
+          <p style={{ fontSize: '0.65rem' }} className='text-blue-900 text-sm mt-0.5'>Add</p>
         </div>
+
       </div>
 
     </div>
