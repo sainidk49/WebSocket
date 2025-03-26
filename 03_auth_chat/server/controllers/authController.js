@@ -71,8 +71,8 @@ const registerUser = async (req, res) => {
 
     const { name, email } = req.body;
 
-    // const otp = await sendOTP(email);
-    const otp = 3698;
+    const otp = await sendOTP(email);
+    // const otp = 3698;
 
     if (user) {
       await User.updateOne({ email: req.body.email }, { $set: { otp: otp } });
@@ -115,8 +115,8 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ status: false, message: 'Please complete your regiteration.' })
     }
 
-    // const otp = await sendOTP(email);
-    const otp = 3698;
+    const otp = await sendOTP(email);
+    // const otp = 3698;
     await User.findByIdAndUpdate(user._id, { ...req.body, otp }, { new: true });
 
     res.status(200).json({ status: true, message: 'OTP sent to email' });

@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const path =  require('path')
+const path = require('path')
 const cors = require('cors');
 const socketIo = require('socket.io');
 const connectDB = require('./config/db');
@@ -23,13 +23,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const io = socketIo(server, {
   cors: {
-    origin: 'http://192.168.1.130:5173',  // Frontend URL
+    origin: 'http://192.168.0.107:5173',  
     methods: ['GET', 'POST'],
   }
 });
 
 app.use(cors({
-  origin: 'http://192.168.1.130:5173',
+  origin: 'http://192.168.0.107:5173',  // Change this to match your frontend URL
   methods: ['GET', 'POST'],
 }));
 
